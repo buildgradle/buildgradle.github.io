@@ -1,0 +1,96 @@
+buildscript {
+    repositories {
+        jcenter()
+        maven { url 'http://download.crashlytics.com/maven' }
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.0.0'
+        classpath 'com.crashlytics.tools.gradle:crashlytics-gradle:1.14.4'
+        classpath 'com.github.ben-manes:gradle-versions-plugin:0.6'
+    }
+}
+
+repositories {
+    jcenter()
+    maven { url 'http://download.crashlytics.com/maven' }
+}
+
+apply plugin: 'com.android.application'
+apply plugin: 'crashlytics'
+apply plugin: 'com.github.ben-manes.versions'
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion '21.1.2'
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 19
+    }
+    sourceSets {
+        androidTest.setRoot('tests')
+    }
+    lintOptions {
+        abortOnError false
+    }
+    packagingOptions {
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/DEPENDENCIES'
+    }
+    productFlavors {
+        production {
+            applicationId 'com.example'
+            buildConfigField 'String', 'API_EXAMPLE', '"http://example.com/api/"'
+            buildConfigField 'String', 'NEW_API_EXAMPLE', '"http://api.example.com/v1/"'
+        }
+        integration {
+            applicationId 'com.example.integration'
+            buildConfigField 'String', 'API_EXAMPLE', '"http://int.example.com/api/"'
+            buildConfigField 'String', 'NEW_API_EXAMPLE', '"http://api.int.example.com/v1/"'
+        }
+        staging {
+            applicationId 'com.example.staging'
+            buildConfigField 'String', 'API_EXAMPLE', '"http://staging.example.com/api/"'
+            buildConfigField 'String', 'NEW_API_EXAMPLE', '"http://api.staging.example.com/v1/"'
+        }
+    }
+    if (project.hasProperty("STORE_FILE")) {
+        signingConfigs {
+            release {
+                storeFile file(STORE_FILE)
+                storePassword STORE_PASSWORD
+                keyAlias KEY_ALIAS
+                keyPassword KEY_PASSWORD
+            }
+        }
+        buildTypes {
+            release {
+                signingConfig signingConfigs.release
+            }
+        }
+    }
+}
+
+dependencies {
+    compile project(':android_libs:Swipecards')
+    provided 'com.squareup.dagger:dagger-compiler:1.2.2'
+    provided 'pl.mg6.hrisey:hrisey:0.3.1'
+    compile 'com.squareup.dagger:dagger:1.2.2'
+    compile 'com.squareup.picasso:picasso:2.4.0'
+    compile 'com.squareup.okhttp:okhttp:2.1.0'
+    compile 'com.squareup.okhttp:okhttp-urlconnection:2.1.0'
+    compile 'com.squareup.retrofit:retrofit:1.8.0'
+    compile 'de.greenrobot:eventbus:2.4.0'
+    compile fileTree(dir: 'libs', include: '*.jar')
+    compile 'com.google.android.gms:play-services:5.0.89'
+    compile 'com.androidmapsextensions:android-maps-extensions:2.2.0'
+    compile project(':android_libs:facebook-android-sdk-3.8.0:facebook')
+    productionCompile "com.mixpanel.android:mixpanel-android:4.3.1@aar"
+    androidTestCompile 'com.jayway.android.robotium:robotium-solo:5.2.1'
+    compile 'com.crashlytics.android:crashlytics:1.1.13'
+    compile files('android_libs/AdTechMobileSdk/ADTECHMobileSDK.jar')
+}
+
+configurations {
+    all*.exclude group: 'com.android.support', module: 'support-v4'
+}
