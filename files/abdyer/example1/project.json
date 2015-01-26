@@ -1,0 +1,5 @@
+{
+  "name": "Andy Dyer - Example 1",
+  "description": "From an SDK project. Includes tasks to delombok, generate Javadocs, and export SDK snaphots.",
+  "url": "http://andydyer.org/blog/2015/01/22/running-shell-commands-with-gradle-and-a-better-way-to-delombok/"
+}
