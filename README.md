@@ -21,7 +21,7 @@ You should probably ask your boss first and obfuscate at least applicationId. We
 
 #### My boss said I can share these files without modification. How cool is that?
 
-That's pretty awesome. And is very likely beneficial for your company. Think of it this way: you have RxJava + Groovy in your dependencies and some other fancy stuff. What developer would not work for a company that experiments with these sort of things? You can use `description` in [`project.json`](files/mg6maciej/android-maps-extensions/project.json) to brag about it even more.
+That's pretty awesome. And is very likely beneficial for your company. Think of it this way: you have RxJava + Groovy in your dependencies and some other fancy stuff. What developer would not want to work for a company that experiments with these sort of things? You can use `description` in [`project.json`](files/mg6maciej/android-maps-extensions/project.json) to brag about it even more.
 
 #### What is this project.json for?
 
