@@ -68,6 +68,15 @@
           "url": "https://buildgradle.github.io/files/mg6maciej/android-maps-extensions/build.gradle"
         }
       ]
+    },
+    {
+      "name": "urlsetter",
+      "files": [
+        {
+          "name": "build.gradle",
+          "url": "https://buildgradle.github.io/files/urlsetter/build.gradle"
+        }
+      ]
     }
   ]
 }
