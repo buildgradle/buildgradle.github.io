@@ -45,6 +45,19 @@
       ]
     },
     {
+      "name": "elpassion/example3",
+      "files": [
+        {
+          "name": "build.gradle",
+          "url": "https://buildgradle.github.io/files/elpassion/example3/build.gradle"
+        },
+        {
+          "name": "app/build.gradle",
+          "url": "https://buildgradle.github.io/files/elpassion/example3/app/build.gradle"
+        }
+      ]
+    },
+    {
       "name": "Vielen Games Android Client",
       "url": "https://play.google.com/store/apps/details?id=com.vielengames",
       "files": [

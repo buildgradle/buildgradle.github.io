@@ -1,0 +1,99 @@
+buildscript {
+    repositories {
+        jcenter()
+        maven { url 'http://download.crashlytics.com/maven' }
+    }
+
+    dependencies {
+        classpath 'org.codehaus.groovy:gradle-groovy-android-plugin:0.3.5'
+        classpath 'com.crashlytics.tools.gradle:crashlytics-gradle:1.14.7'
+        classpath 'com.github.splatte:gradle-android-appiconoverlay:1.1'
+    }
+}
+
+repositories {
+    maven { url 'http://download.crashlytics.com/maven' }
+}
+
+apply plugin: 'com.android.application'
+apply plugin: 'groovyx.grooid.groovy-android'
+apply plugin: 'crashlytics'
+apply plugin: 'app-icon-overlay'
+
+android {
+    compileSdkVersion 21
+    buildToolsVersion "21.1.2"
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 21
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidSpockRunner"
+    }
+    flavorDimensions 'lang'
+    productFlavors {
+        german {
+            flavorDimension 'lang'
+            applicationId "de.example"
+            ext.betaDistributionGroupAliases = "android_de"
+        }
+        french {
+            flavorDimension 'lang'
+            applicationId "fr.example"
+            ext.betaDistributionGroupAliases = "android_fr"
+        }
+        universal {
+            flavorDimension 'lang'
+            applicationId "com.example"
+            ext.betaDistributionGroupAliases = "android_uni"
+        }
+    }
+    signingConfigs {
+        release {
+            storeFile file('app.keystore')
+            storePassword STORE_PASSWORD
+            keyAlias 'app'
+            keyPassword KEY_PASSWORD
+        }
+    }
+    buildTypes {
+        debug {
+            applicationIdSuffix ".debug"
+            ext.betaDistributionReleaseNotesFilePath = "crashlytics_release_notes.txt"
+        }
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            ext.betaDistributionReleaseNotesFilePath = "crashlytics_release_notes.txt"
+        }
+    }
+    packagingOptions {
+        exclude 'LICENSE.txt'
+    }
+    lintOptions {
+        abortOnError false
+    }
+}
+
+dependencies {
+    compile 'com.android.support:appcompat-v7:21.0.3'
+    compile 'com.android.support:cardview-v7:21.0.3'
+    compile 'com.android.support:recyclerview-v7:21.0.3'
+    compile 'org.codehaus.groovy:groovy:2.4.0:grooid'
+    compile 'com.squareup.dagger:dagger:1.2.2'
+    provided 'com.squareup.dagger:dagger-compiler:1.2.2'
+    compile 'com.squareup.retrofit:retrofit:1.9.0'
+    compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0'
+    compile 'com.squareup.okhttp:okhttp:2.0.0'
+    compile 'io.reactivex:rxandroid:0.24.0'
+    compile 'com.crashlytics.android:crashlytics:1.1.13'
+    compile files('libs/appsee.jar')
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.0'
+    androidTestCompile('org.spockframework:spock-core:0.7-groovy-2.0') {
+        exclude group: 'org.codehaus.groovy'
+        exclude group: 'org.hamcrest'
+    }
+}
