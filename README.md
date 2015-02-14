@@ -1,5 +1,7 @@
 # [buildgradle.github.io](https://buildgradle.github.io)
 
+[![Join the chat at https://gitter.im/buildgradle/buildgradle.github.io](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/buildgradle/buildgradle.github.io?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 ## AKA: check out my build.gradle!
 
 **Call for build.gradles.**  
