@@ -5,9 +5,9 @@ buildscript {
     }
 
     dependencies {
-        classpath 'org.codehaus.groovy:gradle-groovy-android-plugin:0.3.5'
-        classpath 'com.crashlytics.tools.gradle:crashlytics-gradle:1.14.7'
-        classpath 'com.github.splatte:gradle-android-appiconoverlay:1.1'
+        classpath 'org.codehaus.groovy:gradle-groovy-android-plugin:0.3.6'
+        classpath 'com.crashlytics.tools.gradle:crashlytics-gradle:1.16.0'
+        classpath 'com.github.splatte:gradle-android-appiconoverlay:1.2'
     }
 }
 
@@ -22,7 +22,7 @@ apply plugin: 'app-icon-overlay'
 
 android {
     compileSdkVersion 22
-    buildToolsVersion "22.0.0"
+    buildToolsVersion '22.0.1'
 
     defaultConfig {
         minSdkVersion 16
@@ -31,6 +31,7 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "android.support.test.runner.AndroidSpockRunner"
+        multiDexEnabled = true
     }
     flavorDimensions 'lang'
     productFlavors {
@@ -76,23 +77,28 @@ android {
     lintOptions {
         abortOnError false
     }
+    dexOptions {
+        javaMaxHeapSize '2g'
+    }
 }
 
 dependencies {
     compile 'com.android.support:appcompat-v7:22.0.0'
     compile 'com.android.support:cardview-v7:22.0.0'
     compile 'com.android.support:recyclerview-v7:22.0.0'
-    compile 'org.codehaus.groovy:groovy:2.4.1:grooid'
+    compile 'com.android.support:multidex:1.0.1'
+    compile 'org.codehaus.groovy:groovy:2.4.3:grooid'
     compile 'com.squareup.dagger:dagger:1.2.2'
     provided 'com.squareup.dagger:dagger-compiler:1.2.2'
     compile 'com.squareup.retrofit:retrofit:1.9.0'
-    compile 'com.squareup.picasso:picasso:2.5.0'
-    compile 'com.squareup.okhttp:okhttp-urlconnection:2.2.0'
-    compile 'com.squareup.okhttp:okhttp:2.2.0'
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.squareup.okhttp:okhttp-urlconnection:2.3.0'
+    compile 'com.squareup.okhttp:okhttp:2.3.0'
     compile 'io.reactivex:rxandroid:0.24.0'
     compile 'de.greenrobot:eventbus:2.4.0'
-    compile 'com.google.android.gms:play-services-location:6.5.87'
-    compile 'com.google.android.gms:play-services-maps:6.5.87'
+    compile 'com.facebook.android:facebook-android-sdk:4.0.1'
+    compile 'com.google.android.gms:play-services-location:7.0.0'
+    compile 'com.google.android.gms:play-services-maps:7.0.0'
     compile 'com.crashlytics.android:crashlytics:1.1.13'
     compile files('libs/appsee.jar')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.0') {
