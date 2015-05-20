@@ -32,6 +32,8 @@ android {
 
         testInstrumentationRunner "android.support.test.runner.AndroidSpockRunner"
         multiDexEnabled = true
+
+        buildConfigField "boolean", "BUILT_ON_TRAVIS", "${System.getenv('TRAVIS') ? true : false}"
     }
     flavorDimensions 'lang'
     productFlavors {
@@ -45,10 +47,15 @@ android {
             applicationId "fr.example"
             ext.betaDistributionGroupAliases = "android_fr"
         }
-        universal {
+        russian {
             flavorDimension 'lang'
-            applicationId "com.example"
-            ext.betaDistributionGroupAliases = "android_uni"
+            applicationId 'ru.example'
+            ext.betaDistributionGroupAliases = 'android_ru'
+        }
+        english {
+            flavorDimension 'lang'
+            applicationId 'uk.example'
+            ext.betaDistributionGroupAliases = 'android_uk'
         }
     }
     signingConfigs {
@@ -86,6 +93,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:22.0.0'
     compile 'com.android.support:cardview-v7:22.0.0'
     compile 'com.android.support:recyclerview-v7:22.0.0'
+    compile 'com.yqritc:recyclerview-flexibledivider:1.2.4'
     compile 'com.android.support:multidex:1.0.1'
     compile 'org.codehaus.groovy:groovy:2.4.3:grooid'
     compile 'com.squareup.dagger:dagger:1.2.2'
@@ -96,7 +104,7 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp:2.3.0'
     compile 'io.reactivex:rxandroid:0.24.0'
     compile 'de.greenrobot:eventbus:2.4.0'
-    compile 'com.facebook.android:facebook-android-sdk:4.0.1'
+    compile 'com.facebook.android:facebook-android-sdk:4.0.0'
     compile 'com.google.android.gms:play-services-location:7.0.0'
     compile 'com.google.android.gms:play-services-maps:7.0.0'
     compile 'com.crashlytics.android:crashlytics:1.1.13'
