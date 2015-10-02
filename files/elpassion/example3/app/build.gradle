@@ -1,36 +1,38 @@
 buildscript {
     repositories {
         jcenter()
-        maven { url 'http://download.crashlytics.com/maven' }
+        maven { url 'https://maven.fabric.io/public' }
     }
 
     dependencies {
         classpath 'org.codehaus.groovy:gradle-groovy-android-plugin:0.3.6'
-        classpath 'com.crashlytics.tools.gradle:crashlytics-gradle:1.16.0'
+        classpath 'io.fabric.tools:gradle:1.19.2'
         classpath 'com.github.splatte:gradle-android-appiconoverlay:1.2'
+        classpath 'com.github.triplet.gradle:play-publisher:1.1.0'
     }
 }
 
 repositories {
-    maven { url 'http://download.crashlytics.com/maven' }
+    maven { url 'https://maven.fabric.io/public' }
 }
 
 apply plugin: 'com.android.application'
 apply plugin: 'groovyx.grooid.groovy-android'
-apply plugin: 'crashlytics'
+apply plugin: 'io.fabric'
 apply plugin: 'app-icon-overlay'
+apply plugin: 'com.github.triplet.play'
 
 android {
     compileSdkVersion 22
     buildToolsVersion '22.0.1'
 
     defaultConfig {
-        minSdkVersion 16
+        minSdkVersion MIN_SDK_VERSION
         targetSdkVersion 22
-        versionCode 1
-        versionName "1.0"
+        versionCode 2001005
+        versionName "2.1.5"
 
-        testInstrumentationRunner "android.support.test.runner.AndroidSpockRunner"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled = true
 
         buildConfigField "boolean", "BUILT_ON_TRAVIS", "${System.getenv('TRAVIS') ? true : false}"
@@ -38,22 +40,22 @@ android {
     flavorDimensions 'lang'
     productFlavors {
         german {
-            flavorDimension 'lang'
-            applicationId "de.example"
-            ext.betaDistributionGroupAliases = "android_de"
+            dimension 'lang'
+            applicationId 'de.example'
+            ext.betaDistributionGroupAliases = 'android_de'
         }
         french {
-            flavorDimension 'lang'
-            applicationId "fr.example"
-            ext.betaDistributionGroupAliases = "android_fr"
+            dimension 'lang'
+            applicationId 'fr.example'
+            ext.betaDistributionGroupAliases = 'android_fr'
         }
         russian {
-            flavorDimension 'lang'
+            dimension 'lang'
             applicationId 'ru.example'
             ext.betaDistributionGroupAliases = 'android_ru'
         }
         english {
-            flavorDimension 'lang'
+            dimension 'lang'
             applicationId 'uk.example'
             ext.betaDistributionGroupAliases = 'android_uk'
         }
@@ -85,14 +87,20 @@ android {
         abortOnError false
     }
     dexOptions {
-        javaMaxHeapSize '2g'
+        javaMaxHeapSize "$DEX_MAX_HEAP_SIZE"
     }
 }
 
+play {
+    serviceAccountEmail = 'SERVICE_ACCOUNT_EMAIL@developer.gserviceaccount.com'
+    pk12File = file('../key.p12')
+}
+
 dependencies {
-    compile 'com.android.support:appcompat-v7:22.0.0'
-    compile 'com.android.support:cardview-v7:22.0.0'
-    compile 'com.android.support:recyclerview-v7:22.0.0'
+    compile 'com.android.support:appcompat-v7:22.2.1'
+    compile 'com.android.support:cardview-v7:22.2.1'
+    compile 'com.android.support:recyclerview-v7:22.2.1'
+    compile 'com.android.support:design:22.2.1'
     compile 'com.yqritc:recyclerview-flexibledivider:1.2.4'
     compile 'com.android.support:multidex:1.0.1'
     compile 'org.codehaus.groovy:groovy:2.4.3:grooid'
@@ -102,22 +110,36 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.3.0'
     compile 'com.squareup.okhttp:okhttp:2.3.0'
-    compile 'io.reactivex:rxandroid:0.24.0'
+    compile 'io.reactivex:rxandroid:1.0.1'
+    compile 'io.reactivex:rxjava:1.0.14'
     compile 'de.greenrobot:eventbus:2.4.0'
-    compile 'com.facebook.android:facebook-android-sdk:4.0.0'
-    compile 'com.google.android.gms:play-services-location:7.0.0'
-    compile 'com.google.android.gms:play-services-maps:7.0.0'
-    compile 'com.crashlytics.android:crashlytics:1.1.13'
-    compile files('libs/appsee.jar')
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.0') {
-        exclude group: 'javax.inject'
+    compile 'com.vk:androidsdk:1.3.9'
+    compile 'com.facebook.android:facebook-android-sdk:4.3.0'
+    compile 'com.google.android.gms:play-services-location:7.5.0'
+    compile 'com.google.android.gms:play-services-maps:7.5.0'
+    compile 'com.google.android.gms:play-services-analytics:7.5.0'
+    compile 'io.branch.sdk.android:library:1.6.1'
+    compile('com.crashlytics.sdk.android:crashlytics:2.5.0@aar') {
+        transitive = true
     }
-    androidTestCompile('com.android.support.test.espresso:espresso-contrib:2.0') {
+    compile files('libs/appsflyer_v2.3.1.18.jar')
+    compile files('libs/appsee.jar')
+    compile files('libs/MobileAppTracker-3.11.1.jar')
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2') {
         exclude group: 'javax.inject'
         exclude group: 'com.android.support'
     }
-    androidTestCompile('org.spockframework:spock-core:0.7-groovy-2.0') {
+    androidTestCompile('com.android.support.test.espresso:espresso-contrib:2.2') {
+        exclude group: 'javax.inject'
+        exclude group: 'com.android.support'
+    }
+    androidTestCompile('org.spockframework:spock-core:1.0-groovy-2.4') {
+        // groovy is excluded because android uses groovy:GROOID
         exclude group: 'org.codehaus.groovy'
         exclude group: 'org.hamcrest'
+        exclude group: 'junit'
+    }
+    testCompile('org.spockframework:spock-core:1.0-groovy-2.4') {
+        exclude group: 'org.codehaus.groovy'
     }
 }
